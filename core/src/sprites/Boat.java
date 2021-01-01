@@ -3,16 +3,45 @@ package sprites;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector3;
 
-public class FisherMan {
+public class Boat {
+  private int boatWidth;
+  private int boatHeight;
+  private float boatStartPositionX;
+
   private final float GRAVITY=-0.1f;
   private Vector3 position;
   private Vector3 v;
-  Texture fisherMan;
+  private int draft; // Осадка лодки
+  private Texture fisherMan;
 
-  public FisherMan(float x, float y) {
+  public Boat(float x, float y) {
     this.position = new Vector3(x,y,0);
     this.v = new Vector3(0f,0f,0f);
     this.fisherMan = new Texture("bot.png");
+    this.draft = 12;
+    this.boatWidth = 30;
+    this.boatHeight = 100;
+    this.boatStartPositionX = x;
+  }
+
+  public float getBoatStartPositionX() {
+    return boatStartPositionX;
+  }
+
+  public int getBoatHeight() {
+    return boatHeight;
+  }
+
+  public int getBoatWidth() {
+    return boatWidth;
+  }
+
+  public int getDraft() {
+    return draft;
+  }
+
+  public void setDraft(int draft) {
+    this.draft = draft;
   }
 
   public void setV(float vX) {
