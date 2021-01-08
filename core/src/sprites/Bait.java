@@ -7,14 +7,15 @@ import com.badlogic.gdx.math.Vector3;
 import ru.fisherman.StartGame;
 
 public class Bait {
-  int cordLength;
-  int sizeW;
-  int sizeH;
-  float time;
-  Texture bait;
+//  private float baitBeginPositionY;
+//  private float baitBeginPositionX;
+  private int cordLength;
+  private int sizeW;
+  private int sizeH;
+  private float time;
+  private Texture bait;
   private Vector3 position;
   private Vector3 v;
-//  ShapeRenderer shapeRenderer;
 
 
   public Bait(float x, float y) {
@@ -32,27 +33,30 @@ public class Bait {
     this.position = position;
   }
 
+//  public float getBaitBeginPositionY() {
+//    return baitBeginPositionY;
+//  }
 
+//  public float getBaitBeginPositionX() {
+//    return baitBeginPositionX;
+//  }
 
-  public void update(float dt, boolean isMomentum,float v0,double alpla) {
+  public void update(float dt, boolean isMomentum, float v0, double alpla) {
     v.scl(dt);
     position.add(v.x, 0, 0);
-//    shapeRenderer.setProjectionMatrix();
-//    shapeRenderer.setColor(Color.BLACK);
-//    shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-//    shapeRenderer.rectLine(position.x,position.y, 0, 0, 1);
-//    shapeRenderer.end();
     if (isMomentum) {
+//      baitBeginPositionX = position.x+sizeH/2;
+//      baitBeginPositionY = position.y+sizeW/2;
       castingFishingRod(dt,v0,alpla);
 
     }
   }
 
-  public void castingFishingRod(float dt,float v0,double alpla) {
+  public void castingFishingRod(float dt,float v0,double alpha) {
     time += dt;
     if (position.y > cordLength) {
-    v.x = v0*(float) Math.sin(alpla);
-    v.y = (float) (v0*(float) Math.cos(alpla)-9.8*time);
+    v.x = v0*(float) Math.sin(alpha);
+    v.y = (float) (v0*(float) Math.cos(alpha)-9.8*time);
     v.scl(time);
 //    System.out.println(this.v);
 
