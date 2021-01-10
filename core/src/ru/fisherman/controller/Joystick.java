@@ -64,10 +64,10 @@ public class Joystick {
     return position;
   }
 
-  public void show(SpriteBatch batch, float x, float y, OrthographicCamera camera) {
+  public void show(SpriteBatch batch, float x, float y) {
 
-    this.x = camera.position.x;
-    this.y = camera.position.y;
+//    this.x = camera.position.x;
+//    this.y = camera.position.y;
     batch.draw(circle, x-height/2, y+2,height,height);
 //    System.out.println("a= "+alpha);
     batch.draw(inCircleTexture, x, y, height/2+2, 2, height, width, 1 , 1,  alpha, 0, 0, inCircleTexture.getWidth(), inCircleTexture.getHeight(), false, false);

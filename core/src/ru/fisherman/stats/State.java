@@ -11,7 +11,7 @@ public abstract class State {
 
   public State(GameStateManager gsm) {
     this.gsm = gsm;
-    camera = new OrthographicCamera();
+//    camera = new OrthographicCamera();
     mouse = new Vector3();
   }
 

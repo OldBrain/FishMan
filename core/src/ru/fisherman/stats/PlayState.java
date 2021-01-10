@@ -3,6 +3,7 @@ package ru.fisherman.stats;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -28,16 +29,21 @@ public class PlayState extends State {
   private ShapeRenderer shapeRenderer;
   private Joystick joystick;
   private FishingRod rod;
+  OrthographicCamera camera;
 
 
   public PlayState(GameStateManager gsm) {
     super(gsm);
+    camera = new OrthographicCamera();
+    camera.setToOrtho(false,StartGame.WIDTH, StartGame.HEIGHT);
     cameraRotationSpeed = 0.25f;
     cameraMoveSpeed = 0.625f;
 
     sea = new Sea();
     house = new House();
-    boat = new Boat(sea.getX(), sea.getSEA_HEIGHT());
+
+    boat = new Boat(0, sea.getSEA_HEIGHT(),30,100);
+
     men = new FisherMan(boat.getPosition().x + boat.getBoatHeight() - 20, boat.getPosition().y - 5,17 * 2,26*2);
     rod = new FishingRod(men.getPosition().x,men.getPosition().y+men.getSizeW()/3+5,50/2,50);
     bait = new Bait(rod.getPosition().x+rod.getSizeW()/2-2f, rod.getPosition().y+rod.getSizeH()-2.5f,5f,5f);
@@ -49,13 +55,10 @@ public class PlayState extends State {
     joystick = new Joystick(rod.getPosition().x,rod.getPosition().y,rod.getSizeH());
 
 //    camera.setToOrtho(false, 200, 200);
-    camera.setToOrtho(false,StartGame.WIDTH, StartGame.HEIGHT);
 
 
-
-    camera.position.x = boat.getPosition().x;
-    camera.position.y = boat.getPosition().y;
-
+    camera.position.x = boat.getPosition().x+camera.viewportWidth/2;
+    camera.position.y = boat.getPosition().y-StartGame.HEIGHT/3;
     shapeRenderer = new ShapeRenderer();
 
 
@@ -64,11 +67,14 @@ public class PlayState extends State {
 
   @Override
   protected void update(float dt) {
+//    camera.update();
+
+    camera.position.x = bait.getPosition().x+310;
+    camera.position.y = bait.getPosition().y-StartGame.HEIGHT/3;
     handleInput();
     boat.update(dt);
     bait.update(dt, isMomentum, 22f, Math.PI/8f );
-    camera.position.x = bait.getPosition().x;
-    camera.position.y = bait.getPosition().y-StartGame.HEIGHT/3;
+
   }
 
   @Override
@@ -79,7 +85,7 @@ public class PlayState extends State {
 
 
     sb.draw(house.getHouseTexture(), 0, sea.getSEA_HEIGHT(), house.getHeight(), house.getWidth());
-    sb.draw(sea.getSeaTexture(), sea.getX(), 0,  sea.getSEA_WIDTH(),sea.getSEA_HEIGHT());
+    sb.draw(sea.getSeaTexture(), 0, 0,  sea.getSEA_WIDTH(),sea.getSEA_HEIGHT());
 
     sb.draw(boat.getBoatTexture(), boat.getPosition().x,
         boat.getPosition().y - boat.getDraft(), boat.getBoatHeight(),
@@ -90,9 +96,9 @@ public class PlayState extends State {
     sb.draw(bait.getBaitTexture(), bait.getPosition().x, bait.getPosition().y, bait.getSizeW(), bait.getSizeH());
 
     if (joystick.isShow) {
-   camera.position.x = bait.getPosition().x;
-   camera.position.y = bait.getPosition().y-StartGame.HEIGHT/3;
-   joystick.show(sb,joystick.getPosition().x, joystick.getPosition().y,camera);
+//   camera.position.x = bait.getPosition().x;
+//   camera.position.y = bait.getPosition().y-StartGame.HEIGHT/3;
+   joystick.show(sb,joystick.getPosition().x, joystick.getPosition().y);
 
     }
 //    System.out.println(bait.getPosition().y);

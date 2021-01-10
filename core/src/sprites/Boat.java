@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
 public class Boat {
-  private int boatWidth;
-  private int boatHeight;
+  private float boatWidth;
+  private float boatHeight;
   private float boatStartPositionX;
 
   private final float GRAVITY=-0.1f;
@@ -14,13 +14,16 @@ public class Boat {
   private int draft; // Осадка лодки
   private Texture boat;
 
-  public Boat(float x, float y) {
+
+  public Boat(float x, float y,float boatWidth,float boatHeight) {
     this.position = new Vector2(x,y);
     this.v = new Vector2(0f,0f);
     this.boat = new Texture("boat.png");
     this.draft = 12;
-    this.boatWidth = 30;
-    this.boatHeight = 100;
+//    this.boatWidth = 30;
+    this.boatWidth = boatWidth;
+//    this.boatHeight = 100;
+    this.boatHeight = boatHeight;
     this.boatStartPositionX = x;
   }
 
@@ -28,11 +31,11 @@ public class Boat {
     return boatStartPositionX;
   }
 
-  public int getBoatHeight() {
+  public float getBoatHeight() {
     return boatHeight;
   }
 
-  public int getBoatWidth() {
+  public float getBoatWidth() {
     return boatWidth;
   }
 

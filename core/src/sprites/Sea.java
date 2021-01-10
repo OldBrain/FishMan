@@ -7,7 +7,9 @@ public class Sea {
   Texture sea;
   private final float SEA_WIDTH = StartGame.WIDTH*3;
   private final float SEA_HEIGHT = StartGame.HEIGHT*3;
-  private final float X=SEA_WIDTH/-2;
+//  private final float X=SEA_WIDTH/-2;
+  private final float X=0;
+
 
   public Texture getSeaTexture() {
     return sea;
