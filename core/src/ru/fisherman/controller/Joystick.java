@@ -31,10 +31,9 @@ public class Joystick {
  public boolean isShow;
 
   public Joystick(float x,float y,float joystickR) {
-   circle = new Texture("dj.png");
-    inCircleTexture = new Texture("u.png");
-    position = new Vector2(x,y);
-
+   this.circle = new Texture("dj.png");
+    this.inCircleTexture = new Texture("u.png");
+    this.position = new Vector2(x,y);
 
     this.width = joystickR;
     this.height = joystickR/2;
@@ -61,8 +60,11 @@ public class Joystick {
     return height;
   }
 
+  public Vector2 getPosition() {
+    return position;
+  }
 
-  public void show(SpriteBatch batch,  float x, float y,OrthographicCamera camera) {
+  public void show(SpriteBatch batch, float x, float y, OrthographicCamera camera) {
 
     this.x = camera.position.x;
     this.y = camera.position.y;

@@ -5,11 +5,16 @@ import ru.fisherman.StartGame;
 
 public class Sea {
   Texture sea;
-  private final float SEA_WIDTH = StartGame.WIDTH;
-  private final float SEA_HEIGHT = StartGame.HEIGHT;
+  private final float SEA_WIDTH = StartGame.WIDTH*3;
+  private final float SEA_HEIGHT = StartGame.HEIGHT*3;
+  private final float X=SEA_WIDTH/-2;
 
   public Texture getSeaTexture() {
     return sea;
+  }
+
+  public float getX() {
+    return X;
   }
 
   public float getSEA_WIDTH() {
