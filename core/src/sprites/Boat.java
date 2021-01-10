@@ -17,7 +17,8 @@ public class Boat {
   public Boat(float x, float y) {
     this.position = new Vector3(x,y,0);
     this.v = new Vector3(0f,0f,0f);
-    this.fisherMan = new Texture("bot.png");
+//    this.fisherMan = new Texture("bot.png");
+    this.fisherMan = new Texture("boat.png");
     this.draft = 12;
     this.boatWidth = 30;
     this.boatHeight = 100;
@@ -59,14 +60,8 @@ public class Boat {
 
 
   public void update(float dt) {
-//    forceOfGravity(false,dt);
-
-
-//    v.x = 0.02f;
-//    v.add(0, 0, 0);
     v.scl(dt);
     position.add(v.x, 0, 0);
-//    v.scl(1 / dt);
   }
   private void forceOfGravity(boolean status,float dt) {
     if (status) {
