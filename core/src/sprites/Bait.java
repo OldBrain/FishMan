@@ -3,6 +3,7 @@ package sprites;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import ru.fisherman.StartGame;
 
@@ -10,44 +11,38 @@ public class Bait {
 //  private float baitBeginPositionY;
 //  private float baitBeginPositionX;
   private int cordLength;
-  private int sizeW;
-  private int sizeH;
+  private float sizeW;
+  private float sizeH;
   private float time;
   private Texture bait;
-  private Vector3 position;
-  private Vector3 v;
+  private Vector2 position;
+  private Vector2 v;
 
 
-  public Bait(float x, float y) {
+  public Bait(float x, float y,float sizeW,float sizeH) {
     this.cordLength = 20;
-    this.position = new Vector3(x,y,0);
-    this.v = new Vector3(0f,0f,0f);
+    this.position = new Vector2(x,y);
+    this.v = new Vector2(0f,0f);
     this.bait = new Texture("bool.png");
-    this.sizeH = 5;
-    this.sizeW = 5;
-    this.v = new Vector3(0,0,0f);
+    this.sizeH = sizeH;
+    this.sizeW = sizeW;
+    this.v = new Vector2(0,0);
 //    shapeRenderer = new ShapeRenderer();
   }
 
-  public void setPosition(Vector3 position) {
-    this.position = position;
+  public void setPosition(float x,float y) {
+    this.position.x = x;
+    this.position.y = y;
   }
 
-//  public float getBaitBeginPositionY() {
-//    return baitBeginPositionY;
-//  }
 
-//  public float getBaitBeginPositionX() {
-//    return baitBeginPositionX;
-//  }
-
-  public void update(float dt, boolean isMomentum, float v0, double alpla) {
+  public void update(float dt, boolean isMomentum, float v0, double alpha) {
     v.scl(dt);
-    position.add(v.x, 0, 0);
+    position.add(v.x, 0);
     if (isMomentum) {
 //      baitBeginPositionX = position.x+sizeH/2;
 //      baitBeginPositionY = position.y+sizeW/2;
-      castingFishingRod(dt,v0,alpla);
+      castingFishingRod(dt,v0,alpha);
 
     }
   }
@@ -58,17 +53,16 @@ public class Bait {
     v.x = v0*(float) Math.sin(alpha);
     v.y = (float) (v0*(float) Math.cos(alpha)-9.8*time);
     v.scl(time);
-//    System.out.println(this.v);
 
-      position.add(v.x, v.y, v.z);
+      position.add(v.x, v.y);
     }
   }
 
-  public int getSizeW() {
+  public float getSizeW() {
     return sizeW;
   }
 
-  public int getSizeH() {
+  public float getSizeH() {
     return sizeH;
   }
 
@@ -76,7 +70,7 @@ public class Bait {
     return bait;
   }
 
-  public Vector3 getPosition() {
+  public Vector2 getPosition() {
     return position;
   }
 

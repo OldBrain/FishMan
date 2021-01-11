@@ -27,22 +27,30 @@ public class Joystick {
   float y;
   float x1;
   float y1;
-
- public boolean isShow;
+  private boolean isMomentum;
+  public boolean isShow;
 
   public Joystick(float x,float y,float joystickR) {
-   circle = new Texture("dj.png");
-    inCircleTexture = new Texture("u.png");
-    position = new Vector2(x,y);
-
+   this.circle = new Texture("dj.png");
+    this.inCircleTexture = new Texture("u3.png");
+    this.position = new Vector2(x,y);
 
     this.width = joystickR;
     this.height = joystickR/2;
     this.joystickR = joystickR;
 //    sprite = new Sprite(inCircleTexture, 0,0, (int) width,(int) height);
-
+    this.isMomentum = false;
     this.isShow = false;
 
+  }
+
+  public void setPosition(float x,float y) {
+    this.position.x = x;
+    this.position.y = y;
+  }
+
+  public float getAlpha() {
+    return (float) Math.toRadians(alpha);
   }
 
   public Texture getInCircleTexture() {
@@ -53,6 +61,14 @@ public class Joystick {
     this.alpha = alpha;
   }
 
+  public void setMomentum(boolean momentum) {
+    isMomentum = momentum;
+  }
+
+  public boolean isMomentum() {
+    return isMomentum;
+  }
+
   public float getWidth() {
     return width;
   }
@@ -61,11 +77,14 @@ public class Joystick {
     return height;
   }
 
+  public Vector2 getPosition() {
+    return position;
+  }
 
-  public void show(SpriteBatch batch,  float x, float y,OrthographicCamera camera) {
+  public void show(SpriteBatch batch, float x, float y) {
 
-    this.x = camera.position.x;
-    this.y = camera.position.y;
+//    this.x = camera.position.x;
+//    this.y = camera.position.y;
     batch.draw(circle, x-height/2, y+2,height,height);
 //    System.out.println("a= "+alpha);
     batch.draw(inCircleTexture, x, y, height/2+2, 2, height, width, 1 , 1,  alpha, 0, 0, inCircleTexture.getWidth(), inCircleTexture.getHeight(), false, false);
@@ -99,6 +118,7 @@ public class Joystick {
       public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 //        alpha = 0;
         makeAlpha(screenX,screenY);
+        isMomentum = true;
 //        System.out.println(screenX);
         return false;
       }
@@ -129,8 +149,14 @@ public class Joystick {
 
   private void makeAlpha(float x1, float y1) {
 
-    x1 = x1 + x - StartGame.WIDTH / 2;
-    y1 = Math.abs(y1 - StartGame.HEIGHT) + y - StartGame.HEIGHT / 2;
+//    x1 = x1 + x - StartGame.WIDTH / 2;
+//    x1 = Math.abs(x1 - x);
+//    y1 = Math.abs(y1 - StartGame.HEIGHT) + y - StartGame.HEIGHT / 2;
+    x = position.x;
+    y = position.y;
+    System.out.println(x+"<>"+y);
+
+//    System.out.println(x+"<>"+x1);
     float a = x - x1;
     float b = y - y1;
     float tmp = (float) Math.toDegrees(Math.atan((a) / (b)))*(-1);
