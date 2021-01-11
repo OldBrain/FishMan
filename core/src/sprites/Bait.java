@@ -30,8 +30,9 @@ public class Bait {
 //    shapeRenderer = new ShapeRenderer();
   }
 
-  public void setPosition(Vector2 position) {
-    this.position = position;
+  public void setPosition(float x,float y) {
+    this.position.x = x;
+    this.position.y = y;
   }
 
 

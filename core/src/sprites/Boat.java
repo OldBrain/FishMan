@@ -18,8 +18,8 @@ public class Boat {
   public Boat(float x, float y,float boatWidth,float boatHeight) {
     this.position = new Vector2(x,y);
     this.v = new Vector2(0f,0f);
-    this.boat = new Texture("boat.png");
-    this.draft = 12;
+    this.boat = new Texture("boatn.png");
+    this.draft = 25;
 //    this.boatWidth = 30;
     this.boatWidth = boatWidth;
 //    this.boatHeight = 100;

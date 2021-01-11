@@ -27,8 +27,8 @@ public class Joystick {
   float y;
   float x1;
   float y1;
-
- public boolean isShow;
+  private boolean isMomentum;
+  public boolean isShow;
 
   public Joystick(float x,float y,float joystickR) {
    this.circle = new Texture("dj.png");
@@ -39,7 +39,7 @@ public class Joystick {
     this.height = joystickR/2;
     this.joystickR = joystickR;
 //    sprite = new Sprite(inCircleTexture, 0,0, (int) width,(int) height);
-
+    this.isMomentum = false;
     this.isShow = false;
 
   }
@@ -50,6 +50,14 @@ public class Joystick {
 
   public void setAlpha(float alpha) {
     this.alpha = alpha;
+  }
+
+  public void setMomentum(boolean momentum) {
+    isMomentum = momentum;
+  }
+
+  public boolean isMomentum() {
+    return isMomentum;
   }
 
   public float getWidth() {
@@ -101,6 +109,7 @@ public class Joystick {
       public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 //        alpha = 0;
         makeAlpha(screenX,screenY);
+        isMomentum = true;
 //        System.out.println(screenX);
         return false;
       }

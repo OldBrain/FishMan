@@ -2,26 +2,21 @@ package sprites;
 
 import com.badlogic.gdx.graphics.Texture;
 
-public class House {
-  private int width;
-  private int height;
-  Texture houseTexture;
+public class House extends FisherSprites{
+//  private int width;
+//  private int height;
+//  Texture houseTexture;
+  //
+//  this.height = 50;
+//    this.width =80;
 
-  public House() {
-    houseTexture = new Texture("house.png");
-    this.height = 50;
-    this.width =80;
-  }
 
-  public int getWidth() {
-    return width;
-  }
-
-  public int getHeight() {
-    return height;
+  public House(float x, float y, float sizeW, float sizeH) {
+    super(x, y, sizeW, sizeH);
+    this.texture = new Texture("house.png");
   }
 
   public Texture getHouseTexture() {
-    return houseTexture;
+    return texture;
   }
 }
