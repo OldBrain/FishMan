@@ -51,4 +51,6 @@ public abstract class FisherSprites {
     this.v.y = y;
   }
 
+
+
 }

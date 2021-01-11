@@ -3,10 +3,10 @@ package ru.fisherman.stats;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import ru.fisherman.StartGame;
 import ru.fisherman.controller.Joystick;
 import sprites.*;
@@ -29,13 +29,15 @@ public class PlayState extends State {
   private ShapeRenderer shapeRenderer;
   private Joystick joystick;
   private FishingRod rod;
-  OrthographicCamera camera;
+  private Vector2 touchCoordinate;
+  private Vector2 spriteCoordinate;
 
 
   public PlayState(GameStateManager gsm) {
     super(gsm);
-    camera = new OrthographicCamera();
-    camera.setToOrtho(false,StartGame.WIDTH, StartGame.HEIGHT);
+    touchCoordinate = new Vector2(0, 0);
+    spriteCoordinate = new Vector2(0, 0);
+//    camera.setToOrtho(false,StartGame.WIDTH, StartGame.HEIGHT);
     cameraRotationSpeed = 0.25f;
     cameraMoveSpeed = 0.625f;
 
@@ -44,7 +46,7 @@ public class PlayState extends State {
 
     boat = new Boat(0, sea.getSEA_HEIGHT(),250,75);
     men = new FisherMan(boat.getPosition().x + boat.getBoatWidth() - 30, boat.getPosition().y ,17 * 6,26*6);
-    rod = new FishingRod(men.getPosition().x,men.getPosition().y+men.getSizeW()/3+10,150/2,150);
+    rod = new FishingRod(men.getPosition().x+10,men.getPosition().y+men.getSizeW()/3+10,70,200);
 
 
     bait = new Bait(rod.getPosition().x+rod.getSizeW()/2-2f, rod.getPosition().y+rod.getSizeH()-2.5f,15f,15f);
@@ -57,8 +59,8 @@ public class PlayState extends State {
     joystick = new Joystick(rod.getPosition().x,rod.getPosition().y,rod.getSizeH());
 
 //    camera.setToOrtho(false, 200, 200);
-    camera.position.x = boat.getPosition().x+StartGame.WIDTH/2;
-    camera.position.y = bait.getPosition().y-StartGame.HEIGHT/4;
+//    camera.position.x = boat.getPosition().x+StartGame.WIDTH/2;
+//    camera.position.y = boat.getPosition().y-StartGame.HEIGHT/3;
 
 
     shapeRenderer = new ShapeRenderer();
@@ -76,17 +78,19 @@ public class PlayState extends State {
     isMomentum = joystick.isMomentum();
     boat.update(dt);
     men.setPosition(boat.getPosition().x + boat.getBoatWidth() - 30, boat.getPosition().y );
-    rod.setPosition(men.getPosition().x, men.getPosition().y + men.getSizeW() / 3 + 10);
+    rod.setPosition(men.getPosition().x+10, men.getPosition().y + men.getSizeW() / 3 + 10);
+    joystick.setPosition(rod.getPosition().x, rod.getPosition().y);
 
     if (isMomentum) {
-      bait.update(dt, isMomentum, 22f, Math.PI/8f );
+      bait.update(dt, isMomentum, 22f, joystick.getAlpha());
       camera.position.x = bait.getPosition().x;
       camera.position.y = bait.getPosition().y;
 
     } else {
+
       camera.position.x = boat.getPosition().x+StartGame.WIDTH/2;
-      camera.position.y = bait.getPosition().y-StartGame.HEIGHT/4;
-      bait.setPosition(rod.getPosition().x+rod.getSizeW()/2-2f, rod.getPosition().y+rod.getSizeH()-2.5f);
+      camera.position.y = boat.getPosition().y;
+      bait.setPosition(rod.getPosition().x-5, rod.getPosition().y+rod.getSizeH()-50);
     }
 
 
@@ -143,6 +147,20 @@ public class PlayState extends State {
 
   }
 
+  private Vector2 getTouchCoordinate(float x, float y) {
+    touchCoordinate.x = x;
+//    coordinate.y = Math.abs(y-StartGame.HEIGHT);
+    touchCoordinate.y = StartGame.HEIGHT-y;
+//        - camera.viewportWidth/2;
+
+    return touchCoordinate;
+  }
+
+  public Vector2 getSpriteCoordinate(float x, float y) {
+    spriteCoordinate.x = x;
+    spriteCoordinate.y = y - sea.getSEA_HEIGHT()+StartGame.HEIGHT/2;
+    return spriteCoordinate;
+  }
 
   @Override
   public void handleInput() {
@@ -154,11 +172,15 @@ public class PlayState extends State {
     }
 
     if (Gdx.input.isTouched()) {
-      System.out.println(rod.getPosition().y +"<>"+ Gdx.input.getY());
-//      System.out.println(rod.getPosition().y - Gdx.input.getY());
 
-      if (Math.abs(rod.getPosition().x - Gdx.input.getX()) < 100
-          && (Math.abs(rod.getPosition().y - Gdx.input.getY()-sea.getSEA_WIDTH()/2) < 200)) {
+
+      System.out.println("Sprite> "+ getSpriteCoordinate(bait.getPosition().x,bait.getPosition().y));
+      System.out.println("Touch> "+ getTouchCoordinate(Gdx.input.getX(),Gdx.input.getY()));
+
+//      System.out.println(bait.getPosition().y-StartGame.HEIGHT/4);
+
+      if (Math.abs(getSpriteCoordinate(rod.getPosition().x,rod.getPosition().y).x - getTouchCoordinate(Gdx.input.getX(),Gdx.input.getY()).x) < 100
+          && (Math.abs(getSpriteCoordinate(rod.getPosition().x,rod.getPosition().y).y - getTouchCoordinate(Gdx.input.getX(),Gdx.input.getY()).y)) < 100) {
 
         joystick.isShow = true;
       } else {
@@ -167,7 +189,7 @@ public class PlayState extends State {
 
 
 //      if (Gdx.input.getX() > boat.getPosition().x + boat.getBoatHeight()) {
-      if ((StartGame.WIDTH/2-Gdx.input.getX() <0)&(!joystick.isShow) ) {
+      if ((StartGame.WIDTH/2-Gdx.input.getX() <0)&&(!joystick.isShow) ) {
         if ((boat.getPosition().x < StartGame.WIDTH / 2 - boat.getBoatWidth())) {
           boat.setV(BOAT_SPEED);
 //          bait.setV(BOAT_SPEED, 0);
@@ -176,7 +198,7 @@ public class PlayState extends State {
       }
       // Двигаемся назад
       else {
-        if ((boat.getPosition().x >= boat.getBoatStartPositionX())) {
+        if ((boat.getPosition().x >= boat.getBoatStartPositionX())&&(!joystick.isShow)) {
           boat.setV(BOAT_SPEED * (-1));
           bait.setV(BOAT_SPEED * (-1), 0);
         }

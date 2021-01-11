@@ -32,7 +32,7 @@ public class Joystick {
 
   public Joystick(float x,float y,float joystickR) {
    this.circle = new Texture("dj.png");
-    this.inCircleTexture = new Texture("u.png");
+    this.inCircleTexture = new Texture("u3.png");
     this.position = new Vector2(x,y);
 
     this.width = joystickR;
@@ -42,6 +42,15 @@ public class Joystick {
     this.isMomentum = false;
     this.isShow = false;
 
+  }
+
+  public void setPosition(float x,float y) {
+    this.position.x = x;
+    this.position.y = y;
+  }
+
+  public float getAlpha() {
+    return (float) Math.toRadians(alpha);
   }
 
   public Texture getInCircleTexture() {
@@ -140,8 +149,14 @@ public class Joystick {
 
   private void makeAlpha(float x1, float y1) {
 
-    x1 = x1 + x - StartGame.WIDTH / 2;
-    y1 = Math.abs(y1 - StartGame.HEIGHT) + y - StartGame.HEIGHT / 2;
+//    x1 = x1 + x - StartGame.WIDTH / 2;
+//    x1 = Math.abs(x1 - x);
+//    y1 = Math.abs(y1 - StartGame.HEIGHT) + y - StartGame.HEIGHT / 2;
+    x = position.x;
+    y = position.y;
+    System.out.println(x+"<>"+y);
+
+//    System.out.println(x+"<>"+x1);
     float a = x - x1;
     float b = y - y1;
     float tmp = (float) Math.toDegrees(Math.atan((a) / (b)))*(-1);
