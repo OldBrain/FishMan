@@ -7,14 +7,17 @@ import ru.fisherman.StartGame;
 
 
 public abstract class FisherSprites {
-   float sizeW;
-   float sizeH;
-   float time;
-   Texture texture;
-   Vector2 position;
-   Vector2 v;
-   Vector2 touchCoordinate;
-   Vector2 spriteCoordinate;
+  public float sizeW;
+  public float sizeH;
+//  public float time;
+  public Texture texture;
+
+  public Vector2 position;
+  public Vector2 v;
+
+  public Vector2 touchCoordinate;
+  public Vector2 spriteCoordinate;
+
 
   public FisherSprites(float x, float y,float sizeW, float sizeH) {
     this.sizeW = sizeW;

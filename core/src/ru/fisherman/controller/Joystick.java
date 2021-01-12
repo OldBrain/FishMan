@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import fishing_accessories.Bait;
+import fishing_accessories.FishingRod;
 import ru.fisherman.StartGame;
 import sprites.Sea;
 
@@ -15,7 +17,7 @@ public class Joystick {
 
 
 
-  Texture inCircleTexture;
+//  Texture inCircleTexture;
 
   float width;
   float height;
@@ -35,7 +37,7 @@ public class Joystick {
 
   public Joystick(float x,float y,float joystickR) {
    this.circle = new Texture("dj.png");
-    this.inCircleTexture = new Texture("u3.png");
+//    this.inCircleTexture = new Texture("u2.png");
     this.position = new Vector2(x,y);
     this.touchCoordinate = new Vector2(0, 0);
     this.spriteCoordinate = new Vector2(0, 0);
@@ -58,9 +60,9 @@ public class Joystick {
     return (float) Math.toRadians(alpha);
   }
 
-  public Texture getInCircleTexture() {
-    return inCircleTexture;
-  }
+//  public Texture getInCircleTexture() {
+//    return inCircleTexture;
+//  }
 
   public void setAlpha(float alpha) {
     this.alpha = alpha;
@@ -86,9 +88,13 @@ public class Joystick {
     return position;
   }
 
-  public void show(SpriteBatch batch, float x, float y) {
+  public void show(SpriteBatch batch, float x, float y, FishingRod rod) {
     batch.draw(circle, x-height/2, y+2,height,height);
-    batch.draw(inCircleTexture, x, y, height/2+2, 2, height, width, 1 , 1,  alpha, 0, 0, inCircleTexture.getWidth(), inCircleTexture.getHeight(), false, false);
+
+//    batch.draw(inCircleTexture, x, y, height/2+2, 2, height, width, 1 , 1,  alpha, 0, 0, inCircleTexture.getWidth(), inCircleTexture.getHeight(), false, false);
+    batch.draw(rod.texture, x, y, height/2+2, 2, height, width, 1 , 1,  alpha, 0, 0, rod.texture.getWidth(), rod.texture.getHeight(), false, false);
+
+
     Gdx.input.setInputProcessor(new InputProcessor() {
 
       @Override
@@ -150,7 +156,7 @@ public class Joystick {
   private void makeAlpha(float x1, float y1) {
     x = getSpriteCoordinate(position.x, position.y).x;
     y = getSpriteCoordinate(position.x, position.y).y;
-    System.out.println(x+"<>"+y);
+//    System.out.println(x+"<>"+y);
     float a = x - x1;
     float b = y - y1;
     float tmp = (float) Math.toDegrees(Math.atan((a) / (b)))*(-1);
