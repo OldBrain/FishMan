@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import ru.fisherman.StartGame;
+import sprites.Sea;
 
 public class Joystick {
   Texture circle;
@@ -29,11 +30,15 @@ public class Joystick {
   float y1;
   private boolean isMomentum;
   public boolean isShow;
+  Vector2 touchCoordinate;
+  Vector2 spriteCoordinate;
 
   public Joystick(float x,float y,float joystickR) {
    this.circle = new Texture("dj.png");
     this.inCircleTexture = new Texture("u3.png");
     this.position = new Vector2(x,y);
+    this.touchCoordinate = new Vector2(0, 0);
+    this.spriteCoordinate = new Vector2(0, 0);
 
     this.width = joystickR;
     this.height = joystickR/2;
@@ -82,13 +87,10 @@ public class Joystick {
   }
 
   public void show(SpriteBatch batch, float x, float y) {
-
-//    this.x = camera.position.x;
-//    this.y = camera.position.y;
     batch.draw(circle, x-height/2, y+2,height,height);
-//    System.out.println("a= "+alpha);
     batch.draw(inCircleTexture, x, y, height/2+2, 2, height, width, 1 , 1,  alpha, 0, 0, inCircleTexture.getWidth(), inCircleTexture.getHeight(), false, false);
     Gdx.input.setInputProcessor(new InputProcessor() {
+
       @Override
       public boolean keyDown(int keycode) {
         return false;
@@ -106,29 +108,27 @@ public class Joystick {
 
       @Override
       public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        x1 = screenX;
-        y1 = screenY;
+        x1 = getTouchCoordinate(screenX, screenY).x;
+        y1 = getTouchCoordinate(screenX, screenY).y;
         makeAlpha(x1,y1);
-//        alpha += 1;
         return false;
 
       }
 
       @Override
       public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-//        alpha = 0;
-        makeAlpha(screenX,screenY);
+        x1 = getTouchCoordinate(screenX, screenY).x;
+        y1 = getTouchCoordinate(screenX, screenY).y;
+        makeAlpha(x1,y1);
         isMomentum = true;
-//        System.out.println(screenX);
         return false;
       }
 
       @Override
       public boolean touchDragged(int screenX, int screenY, int pointer) {
-//        alpha += 1;
-//        System.out.println(x +"--"+ screenX+" / "+screenY);
-//        System.out.println(pointer);
-        makeAlpha(screenX, screenY);
+        x1 = getTouchCoordinate(screenX, screenY).x;
+        y1 = getTouchCoordinate(screenX, screenY).y;
+        makeAlpha(x1,y1);
         return false;
       }
 
@@ -148,15 +148,9 @@ public class Joystick {
   }
 
   private void makeAlpha(float x1, float y1) {
-
-//    x1 = x1 + x - StartGame.WIDTH / 2;
-//    x1 = Math.abs(x1 - x);
-//    y1 = Math.abs(y1 - StartGame.HEIGHT) + y - StartGame.HEIGHT / 2;
-    x = position.x;
-    y = position.y;
+    x = getSpriteCoordinate(position.x, position.y).x;
+    y = getSpriteCoordinate(position.x, position.y).y;
     System.out.println(x+"<>"+y);
-
-//    System.out.println(x+"<>"+x1);
     float a = x - x1;
     float b = y - y1;
     float tmp = (float) Math.toDegrees(Math.atan((a) / (b)))*(-1);
@@ -170,5 +164,18 @@ public class Joystick {
 
   }
 
+  private Vector2 getTouchCoordinate(float x, float y) {
+    touchCoordinate.x = x;
+//    coordinate.y = Math.abs(y-StartGame.HEIGHT);
+    touchCoordinate.y = StartGame.HEIGHT-y;
+//        - camera.viewportWidth/2;
 
+    return touchCoordinate;
+  }
+
+  public Vector2 getSpriteCoordinate(float x, float y) {
+    spriteCoordinate.x = x;
+    spriteCoordinate.y = y - Sea.SEA_HEIGHT+StartGame.HEIGHT/2;
+    return spriteCoordinate;
+  }
 }
