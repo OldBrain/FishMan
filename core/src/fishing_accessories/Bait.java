@@ -70,24 +70,24 @@ public class Bait {
 
       v.x = v0 * (float) Math.sin(alpha);
       v.y = (float) (v0 * (float) Math.cos(alpha) - g * time);
-//      v.x =  (float) Math.sin(alpha);
-//      v.y = (float) ((float) Math.cos(alpha) - g * time);
-      v.nor();
-      if (position.y > 1440) {
-               v.scl(v0);
+      v.scl(v0);
+      if (position.y < 1440) {
+        v.nor();
       }
 
       position.add(v.x, v.y);
     } else { // Шнур вымотан полностью
 
-      v.x = v.x-10;
+      if (position.x > baitBeginPositionX) {
+        v.x = v.x - 1;
+      } else {
+        v.x = 0;
+      }
 
         v.y = (float) (v0 * (float) Math.cos(alpha) - g * time);
       if (v.y > 0) {
-
         v.y = v.y * (-1);
       }
-
 
       v.nor();
       if (position.y > 1440) {
