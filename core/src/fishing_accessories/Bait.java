@@ -1,6 +1,8 @@
 package fishing_accessories;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import sprites.Sea;
 
@@ -16,7 +18,7 @@ public class Bait {
   private float baitBeginPositionY;
 
   public Bait(float x, float y,float sizeW,float sizeH) {
-    this.cordLength = 400;
+    this.cordLength = 800;
     this.position = new Vector2(x,y);
     this.v = new Vector2(0f,0f);
     this.bait = new Texture("bool.png");
@@ -35,9 +37,9 @@ public class Bait {
 
 
   public void update(float dt, boolean isMomentum, float v0, double alpha) {
-
-
-
+    if (position.y <= 0) {
+      isMomentum = false;
+    }
     v.scl(dt);
     position.add(v.x, 0);
     if (isMomentum) {
@@ -45,21 +47,19 @@ public class Bait {
     } else {
       baitBeginPositionX = position.x;
       baitBeginPositionY = position.y;
-
-
     }
 
   }
 
+  public void render(SpriteBatch batch) {
+
+
+  }
+
+
+
   public void castingFishingRod(float dt,float v0,double alpha,float g) {
     time += dt;
-    System.out.println(Sea.SEA_HEIGHT+"***"+position.y);
-    if (position.y>1000) {
-      g = 9.8f;
-    }else { //Попал в воду
-      g = 3f;
-//      time = 1 / time;
-    }
 
 
     if (position.y >= 0) {
@@ -67,21 +67,33 @@ public class Bait {
 //      System.out.println(position.y);
 
     if (getFreeCord(position.x, position.y) < cordLength) {
+
       v.x = v0 * (float) Math.sin(alpha);
+      v.y = (float) (v0 * (float) Math.cos(alpha) - g * time);
+//      v.x =  (float) Math.sin(alpha);
+//      v.y = (float) ((float) Math.cos(alpha) - g * time);
+      v.nor();
+      if (position.y > 1440) {
+               v.scl(v0);
+      }
 
-
-        v.y = (float) (v0 * (float) Math.cos(alpha) - g * time);
-
-
-
-      v.scl(time);
       position.add(v.x, v.y);
     } else { // Шнур вымотан полностью
 
+      v.x = v.x-10;
 
-      v.x = 0;
-      v.y = (float) (v0 * (float) Math.cos(alpha) - g * time);
-      v.scl(time);
+        v.y = (float) (v0 * (float) Math.cos(alpha) - g * time);
+      if (v.y > 0) {
+
+        v.y = v.y * (-1);
+      }
+
+
+      v.nor();
+      if (position.y > 1440) {
+        v.scl(v0);
+      }
+
       position.add(v.x, v.y);
 
     }

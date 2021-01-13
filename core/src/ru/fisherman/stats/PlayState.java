@@ -70,7 +70,7 @@ public class PlayState extends State {
     joystick.setPosition(rod.getPosition().x, rod.getPosition().y);
 
     if (isMomentum) {
-      bait.update(dt, isMomentum, 22f, joystick.getAlpha());
+      bait.update(dt, isMomentum, 30f, joystick.getAlpha());
       camera.position.x = bait.getPosition().x;
       camera.position.y = bait.getPosition().y;
 
@@ -78,7 +78,7 @@ public class PlayState extends State {
 
       camera.position.x = boat.getPosition().x+StartGame.WIDTH/2;
       camera.position.y = boat.getPosition().y;
-      bait.update(dt, isMomentum, 22f, joystick.getAlpha());
+      bait.update(dt, isMomentum, 15f, joystick.getAlpha());
       bait.setPosition(rod.getPosition().x-5, rod.getPosition().y+rod.getSizeH()-50);
 
     }
