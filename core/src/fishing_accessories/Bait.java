@@ -18,7 +18,7 @@ public class Bait {
   private float baitBeginPositionY;
 
   public Bait(float x, float y,float sizeW,float sizeH) {
-    this.cordLength = 800;
+    this.cordLength = 400;
     this.position = new Vector2(x,y);
     this.v = new Vector2(0f,0f);
     this.bait = new Texture("bool.png");
@@ -71,28 +71,38 @@ public class Bait {
       v.x = v0 * (float) Math.sin(alpha);
       v.y = (float) (v0 * (float) Math.cos(alpha) - g * time);
       v.scl(v0);
-      if (position.y < 1440) {
+      if (position.y < Sea.SEA_HEIGHT) {
         v.nor();
       }
 
       position.add(v.x, v.y);
     } else { // Шнур вымотан полностью
 
-      if (position.x > baitBeginPositionX) {
-        v.x = v.x - 1;
-      } else {
-        v.x = 0;
-      }
+
+
 
         v.y = (float) (v0 * (float) Math.cos(alpha) - g * time);
       if (v.y > 0) {
         v.y = v.y * (-1);
       }
 
+      if (position.x > baitBeginPositionX) {
+        v.x =  - 1;
+      } else {
+        v.x = 0;
+      }
+
+
       v.nor();
-      if (position.y > 1440) {
+      // Шнур под водой
+      if (position.y > Sea.SEA_HEIGHT) {
+
+
+
         v.scl(v0);
       }
+
+
 
       position.add(v.x, v.y);
 
