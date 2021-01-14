@@ -21,7 +21,8 @@ public class StartGame extends ApplicationAdapter {
     batch = new SpriteBatch();
 
     gsm = new GameStateManager();
-    Gdx.gl.glClearColor(0.2f,0.0f,0.3f,1);
+//    Gdx.gl.glClearColor(0.2f,0.0f,0.3f,1);
+    Gdx.gl.glClearColor(0.0f,0.0f,1f,1);
     gsm.push(new MenuState(gsm));
 
   }

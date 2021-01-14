@@ -1,4 +1,4 @@
-package ru.fisherman.controller;
+package controller;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
@@ -89,8 +89,9 @@ public class Joystick {
   }
 
   public void show(SpriteBatch batch, float x, float y, FishingRod rod) {
+    batch.setColor(1.0f,1.0f,1.0f,1);
     batch.draw(circle, x-height/2, y+2,height,height);
-
+    batch.setColor(1,1,1,1);
 //    batch.draw(inCircleTexture, x, y, height/2+2, 2, height, width, 1 , 1,  alpha, 0, 0, inCircleTexture.getWidth(), inCircleTexture.getHeight(), false, false);
     batch.draw(rod.texture, x, y, height/2+2, 2, height, width, 1 , 1,  alpha, 0, 0, rod.texture.getWidth(), rod.texture.getHeight(), false, false);
 

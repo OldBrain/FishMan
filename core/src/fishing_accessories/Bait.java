@@ -87,7 +87,7 @@ public class Bait {
       }
 
       if (position.x > baitBeginPositionX) {
-        v.x =  - 1;
+        v.x =  v.x- 1;
       } else {
         v.x = 0;
       }

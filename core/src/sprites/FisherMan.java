@@ -9,7 +9,7 @@ public class FisherMan extends FisherSprites {
 
   public FisherMan(float x, float y, float sizeW, float sizeH) {
     super(x, y, sizeW, sizeH);
-    this.texture = new Texture("men.png");
+    this.texture = new Texture("fm.png");
     this.sizeW = sizeW;
 //        = 17 * 2;
     this.sizeH = sizeH;

@@ -64,6 +64,7 @@ public class Boat {
   public void update(float dt) {
     v.scl(dt);
     position.add(v.x, 0);
+//    position.x = v.x;
   }
   private void forceOfGravity(boolean status,float dt) {
     if (status) {

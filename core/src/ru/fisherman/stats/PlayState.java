@@ -12,13 +12,15 @@ import fishing_accessories.Bait;
 import fishing_accessories.Boat;
 import fishing_accessories.FishingRod;
 import ru.fisherman.StartGame;
-import ru.fisherman.controller.Joystick;
+import controller.Joystick;
 import sprites.*;
-import util.TextView;
 
 public class PlayState extends State {
 
   float dt;
+  float time;
+  float waves;
+  float wavesY;
   private Texture menu;
   private fishing_accessories.Boat boat;
   private Sea sea;
@@ -45,6 +47,7 @@ public class PlayState extends State {
 
   public PlayState(GameStateManager gsm) {
     super(gsm);
+    wavesY = 2.5f;
     font = new BitmapFont(Gdx.files.internal("font.fnt"));
     strB = new StringBuilder();
     cursorCoordinate = new Vector2(0, 0);
@@ -58,7 +61,7 @@ public class PlayState extends State {
     house = new House(0, sea.getSEA_HEIGHT(), 160, 100);
 
     boat = new Boat(0, sea.getSEA_HEIGHT(), 250, 75);
-    men = new FisherMan(boat.getPosition().x + boat.getBoatWidth() - 30, boat.getPosition().y, 17 * 6, 26 * 6);
+    men = new FisherMan(boat.getPosition().x + boat.getBoatWidth() - 80, boat.getPosition().y, 17 * 6, 26 * 6);
     rod = new FishingRod(men.getPosition().x + 10, men.getPosition().y + men.getSizeW() / 3 + 10, 70, 200);
     bait = new Bait(rod.getPosition().x + rod.getSizeW() / 2 - 2f, rod.getPosition().y + rod.getSizeH() - 2.5f, 15f, 15f);
     baitBeginPositionX = bait.getPosition().x + bait.getSizeH() / 2;
@@ -72,10 +75,12 @@ public class PlayState extends State {
   protected void update(float dt) {
 
     handleInput();
+    time += dt;
+    waves = (float) (wavesY*Math.sin(time));
     isMomentum = joystick.isMomentum();
     boat.update(dt);
-    men.setPosition(boat.getPosition().x + boat.getBoatWidth() - 30, boat.getPosition().y);
-    rod.setPosition(men.getPosition().x + 10, men.getPosition().y + men.getSizeW() / 3 + 10);
+    men.setPosition(boat.getPosition().x + boat.getBoatWidth() - 80, boat.getPosition().y+waves*wavesY);
+    rod.setPosition(men.getPosition().x + 50, men.getPosition().y + men.getSizeW() / 3 + 10);
     joystick.setPosition(rod.getPosition().x, rod.getPosition().y);
 
     if (isMomentum) {
@@ -87,13 +92,15 @@ public class PlayState extends State {
 
       camera.position.x = boat.getPosition().x + StartGame.WIDTH / 2;
       camera.position.y = boat.getPosition().y;
-      bait.update(dt, isMomentum, 30f, joystick.getAlpha());
+      bait.update(dt, isMomentum, 15f, joystick.getAlpha());
       bait.setPosition(rod.getPosition().x - 5, rod.getPosition().y + rod.getSizeH() - 50);
 
     }
     makeString();
 
   }
+
+
 
   private void makeString() {
     strB.delete(0, strB.length());
@@ -112,13 +119,14 @@ public class PlayState extends State {
     sb.draw(house.getHouseTexture(), 0, sea.getSEA_HEIGHT(), house.getSizeW(), house.getSizeH());
     sb.draw(sea.getSeaTexture(), 0, 0, sea.getSEA_WIDTH(), sea.getSEA_HEIGHT());
 
-    sb.draw(boat.getBoatTexture(), boat.getPosition().x,
-        boat.getPosition().y - boat.getDraft(), boat.getBoatWidth(),
-        boat.getBoatHeight());
-
-    sb.draw(men.getTexture(), men.getPosition().x, men.getPosition().y, men.getSizeW(), men.getSizeH());
+//    batch.draw(rod.texture, x, y, height/2+2, 2, height, width, 1 , 1,  alpha, 0, 0, rod.texture.getWidth(), rod.texture.getHeight(), false, false);
+    sb.draw(boat.getBoatTexture(), boat.getPosition().x, boat.getPosition().y - boat.getDraft(), boat.getBoatHeight()/2, 2,
+        boat.getBoatWidth(), boat.getBoatHeight(), 1 , 1,  waves, 0, 0, boat.getBoatTexture().getWidth(), boat.getBoatTexture().getHeight(), false, false);
+//    sb.draw(boat.getBoatTexture(), boat.getPosition().x,boat.getPosition().y - boat.getDraft(), boat.getBoatWidth(),boat.getBoatHeight());
 
     sb.draw(rod.getTexture(), rod.getPosition().x, rod.getPosition().y, rod.getSizeW(), rod.getSizeH());
+    sb.draw(men.getTexture(), men.getPosition().x, men.getPosition().y, men.getSizeW(), men.getSizeH());
+
 
     sb.draw(bait.getBaitTexture(), bait.getPosition().x, bait.getPosition().y, bait.getSizeW(), bait.getSizeH());
 
@@ -160,20 +168,7 @@ public class PlayState extends State {
     return cursorCoordinate;
   }
 
-//  private Vector2 getTouchCoordinate(float x, float y) {
-//    touchCoordinate.x = x;
-////    coordinate.y = Math.abs(y-StartGame.HEIGHT);
-//    touchCoordinate.y = StartGame.HEIGHT - y;
-////        - camera.viewportWidth/2;
-//
-//    return touchCoordinate;
-//  }
 
-//  public Vector2 getSpriteCoordinate(float x, float y) {
-//    spriteCoordinate.x = x;
-//    spriteCoordinate.y = y - sea.getSEA_HEIGHT() + StartGame.HEIGHT / 2;
-//    return spriteCoordinate;
-//  }
 
   @Override
   public void handleInput() {
